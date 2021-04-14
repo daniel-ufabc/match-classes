@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+
+{% block title %}Preferências{% endblock %}
+
+
+{% block links %}
+<ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="/logout"><i class="material-icons">exit_to_app</i></a>
+    </li>
+</ul>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card my-4" id="disciplinas">
+                <h5 class="card-header">Disciplinas</h5>
+
+                <div class="card-body">
+                    <!-- <p>Itens mais acima têm maior preferência na alocação.</p> -->
+
+                    <ol>
+                    {% for course in course_list %}
+                        <li>{{ course.name }}</li>
+                    {% endfor %}
+                    </ol>
+                </div>
+                <div class="card-footer text-muted">
+                    <button class="btn btn-primary" type="button" id="edit_courses" onclick="edit();" style="padding-top: 0;">
+                        Editar <i class="material-icons" style="position: relative; top: .3em;">keyboard_arrow_right</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% for course_app in course_list %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card my-4" id="turmas{{ course_app.course_code }}">
+                    <h5 class="card-header"><!-- Preferências das turmas de -->{{ course_app.name }}</h5>
+
+                    <div class="card-body">
+                        <!-- <p>Itens mais acima têm maior preferência na alocação.</p> -->
+
+                        <ol>
+                        {% for class_app in class_lists[course_app.course_code] %}
+                            <li>
+                                {% set p = parse_json(class_app.properties) %}
+                                {{ class_app.class_code }} - prof. {{ p.PROFESSOR | d('não informado') }}
+                                {% if 'CARGA' in p %}- carga horária {{ p.CARGA }}h
+                                {% endif %}- {{ class_app.schedule }}
+                            </li>
+                        {% endfor %}
+                        </ol>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <button class="btn btn-primary" type="button" id="edit_course{{ course_app.course_code }}"
+                                onclick="edit('{{ course_app.course_code }}');" style="padding-top: 0;">
+                            Editar
+                            <i class="material-icons" style="position: relative; top: .3em;">keyboard_arrow_right</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<script>
+    function edit(ID) {
+        if (ID)
+            window.location.href = "/pref/set/" + ID;
+        else
+            window.location.href = "/pref/set";
+    }
+</script>
+{% endblock %}

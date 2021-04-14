@@ -1,0 +1,56 @@
+version: '3'
+
+volumes:
+  data:
+  mysql:
+
+
+services:
+  mariadb:
+    image: "mariadb:10.3"
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+    env_file:
+      - .env
+    command:
+      - "--max_allowed_packet=256M"
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_unicode_ci"
+  iturmas:
+    build: .
+    ports:
+      - 8000:8000
+    volumes:
+      - data:/data
+    depends_on:
+      - mariadb
+      - redis
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=redis
+      - DATABASE_HOST=mariadb
+  worker:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=redis
+      - DATABASE_HOST=mariadb      
+    volumes:
+      - data:/data
+    depends_on:
+      - mariadb
+      - redis
+    command: python worker.py
+  redis:
+    image: "redis:6.0"
+    ports:
+      - 6379:6379
+  maild:
+    image: python:3.8.3-alpine
+    ports:
+      - 8025:8025
+    command: python -m smtpd -n -c DebuggingServer 0.0.0.0:8025

@@ -1,0 +1,38 @@
+.my-sortable {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.my-sortable li {
+    margin: 0 5px 5px 5px;
+    padding: 6px;
+    padding-left: 1em;
+    min-height: 2.3em;
+    height: auto; // 2.3em
+    line-height: 1.5em;
+}
+
+.my-sortable li img {
+    position: relative;
+    width: 10px;
+    height: 18px;
+    left: -.5em;
+    top: -.2em;
+}
+
+.sortable-placeholder {
+    // height: 2.3em;
+    border: 1px solid #AAA;
+    border-style: dashed;
+}
+
+.ui-state-default {
+    border: 0;
+}
+
+.blink {
+    // color: #FFF !important;
+    background: yellow !important;
+}

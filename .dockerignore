@@ -1,0 +1,9 @@
+.env
+.git/
+.gitignore
+misc/
+venv/
+dc.env
+docker-compose.yml
+Dockerfile
+driver/bin/sort_students

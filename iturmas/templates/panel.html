@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Turmas{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link href="{{ url_for('static', filename='css/dropzone.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block link_panel %}
+    <li class="nav-item active">
+        <a class="nav-link" href="#">Painel
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+{% endblock %}
+
+{% block modals %}
+    {{ super() }}
+    <!-- Modal -->
+    <div class="modal fade" id="executeModal" tabindex="-1" role="dialog" aria-labelledby="modalExecute">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="ExecuteModalLabel">Executar atribuição de turmas</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="execute">
+                        <div class="form-group">
+                            <label for="maxSearch">Busca máxima</label>
+                            <div style="display: inline-block; position: relative; width: 100%;">
+                                <input type="text" class="form-control" id="maxSearch"
+                                   placeholder="{{ default_max_search }}" value="{{ default_max_search }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="preferredParameter">Parâmetro preferencial</label>
+                            <select class="form-control" id="preferredParameter">
+                                {% for param in parameters %}
+                                    {% if loop.index == 0 %}
+                                        <option value="{{ loop.index }}" selected="selected">{{ param }}</option>
+                                    {% else %}
+                                        <option value="{{ loop.index }}">{{ param }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Cancel">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="execute();" >
+                        Executar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="modalAdduser">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="addUserModalLabel">Acrescentar usuário</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUser">
+                        <div class="form-group">
+                            <label for="emailInput">Identificador único:</label>
+                            <div style="display: inline-block; position: relative; width: 100%;">
+                                <input type="email" class="form-control" id="emailInput" name="email"
+                                   placeholder="Email institucional" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                              <label for="adminOpt"><input type="checkbox" id="adminOpt" name="admin" value="admin"> administrador</label><br>
+                              <label for="inviteOpt"><input type="checkbox" id="inviteOpt" name="invite" value="invite"> enviar e-mail</label><br>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Cancel">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="execute_add_user();" >
+                        Cadastrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="card my-4">
+    <div class="card-header">
+        <h2>Informações</h2>
+    </div>
+
+    <div class="card-body">
+        <h2>Banco de dados</h2>
+        <br>
+
+        <div id="stats">
+
+        </div>
+        <br>
+
+        <h2 class="card-title">Processo de alocação</h2>
+        <br>
+
+        <div id="runs">
+
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        Informações atualizadas às <i><span id="my_datetime"></span></i>.
+        <span style="float: right;" class="small">
+            Atualizar automaticamente&nbsp;&nbsp;&nbsp;
+            <button id="auto_refresh_toggle" type="button" class="btn btn-xs btn-toggle"
+                    data-toggle="button" aria-pressed="false"> <!-- autocomplete="off"> -->
+            <span class="handle" style="display: inline;"></span>
+      </button>
+        </span>
+    </div>
+</div>
+    <form action="" id="fileUploadForm" method="POST" enctype="multipart/form-data" style="display: none;">
+        <input type="file" name="file" />
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/panel.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/crud.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/file_ops.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/user_ops.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scheduler.js') }}"></script>
+{% endblock %}

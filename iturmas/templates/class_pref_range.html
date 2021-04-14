@@ -1,0 +1,30 @@
+{% for record in records %}
+    <div class="card mb-4">
+        <div class="card-header" data-toggle="collapse"
+             data-target="#collapse{{ record.code }}">
+            <span class="card-title">
+                {% set p = parse_json(record.properties) %}
+                {{ record.code }} - prof. {{ p.PROFESSOR | d('não informado') }}
+                {% if 'CARGA' in p %}- carga horária {{ p.CARGA }}h
+                {% endif %}- {{ record.schedule }}
+{#                {{ record.class_code }} - {{ record.properties | properties2show('classes') }} -
+                {{ record.schedule }} #}
+            </span>
+            <i class="material-icons btn-link no-underline" style="float: right; cursor: pointer;"
+               onclick="event.stopPropagation(); add_item('{{ record.code }}', '{{ record.course_code }} - {{ record.properties | properties2show('classes') }} - {{ record.schedule }}');">add_box</i>
+        </div>
+        <div class="collapse"  id="collapse{{ record.code }}" data-iturmas-name="{{ record['courses.name'] }}">
+            <div class="card-body">
+                <p class="card-text">
+                    HORÁRIO: {{ record.schedule }}<br>
+                    <!-- CÓDIGO: {{ record.code }}<br> -->
+                    CÓDIGO DISC.: {{ record.course_code }}<br>
+                    {% set p = parse_json(record.properties) %}
+                    {% for key in p %}
+                        {{ key | upper }}: {{ p[key] }}<br>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endfor %}

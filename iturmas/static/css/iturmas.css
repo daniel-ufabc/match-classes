@@ -1,0 +1,143 @@
+/*!
+ * Start Bootstrap - Blog Home (https://startbootstrap.com/template-overviews/blog-home)
+ * Copyright 2013-2019 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-blog-home/blob/master/LICENSE)
+ */
+
+body {
+  padding-top: 56px;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Change the docs' brand */
+#iturmas_brand {
+  padding-right: 0;
+  padding-left: 0;
+  margin-left: 20px;
+  float: right;
+  font-weight: bold;
+  color: #000;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+  -webkit-transition: all .2s linear;
+     -moz-transition: all .2s linear;
+          transition: all .2s linear;
+}
+
+#iturmas_brand:hover {
+  text-decoration: none;
+  color: #FFF;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
+}
+
+.ui-autocomplete {
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+}
+/*
+.ui-menu-item {
+    cursor: pointer;
+    width: 400px;
+}
+
+.ui-menu-item-wrapper {
+    padding: 0;
+    margin: 0;
+    // width: 300px;
+}
+
+.ui-menu-item:hover {
+    background: grey;
+    cursor: pointer;
+}
+*/
+.no-underline {
+  text-decoration: none !important;
+}
+
+/*
+a > span.badge:hover {
+    text-decoration: none !important;
+    font-size: 14px;
+}
+*/
+
+#myDropzone.dropzone {
+    background: white;
+    border-radius: 9px;
+    border: 2px dashed rgb(0, 135, 247);
+    border-image: none;
+    // max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#uploadInfoHeader {
+    margin-top: 1em;
+    cursor: pointer;
+}
+
+#uploadInfoHeader > .material-icons {
+    transition: .3s transform ease-in-out;
+}
+
+#uploadInfoHeader.collapsed > .material-icons {
+    transform: rotate(180deg);
+}
+
+#divEdit {
+    display: inline;
+    float: right;
+}
+
+p.my-hidden {
+    display: none;
+}
+
+p.my-warning {
+    color: salmon;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
+
+.my-loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

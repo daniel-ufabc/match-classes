@@ -1,0 +1,100 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 30%">Tipo</th>
+      <th scope="col">Quantidade</th>
+      <th scope="col" style="width: 30%">Operações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Usuários</td>
+      <td>{{ data.users }}</td>
+      <td>
+        <a href="#" onclick="download_click_handler(event);" data-domain="users"
+           download="usuarios.csv" title="Download table">
+          <span class="badge badge-success">CSV&nbsp;&blacktriangledown;</span>
+        </a>
+        <a href="#" onclick="add_user()" title="Adicionar usuário">
+          <span class="badge badge-success">ADD</span>
+        </a>
+        <a href="#" onclick="remove_user()" title="Remover usuário">
+          <span class="badge badge-primary">REMOVE</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Alunos</td>
+      <td>{{ data.students }}</td>
+      <td>
+        <a href="#" onclick="download_click_handler(event);" data-domain="students"
+           download="alunos.csv" title="Download table">
+          <span class="badge badge-success">CSV&nbsp;&blacktriangledown;</span>
+        </a>
+        <a href="#" onclick="pick_file_and_send('students')" title="Upload table (safe)">
+          <span class="badge badge-primary">CSV&nbsp;&blacktriangle;</span>
+        </a>
+        <a href="#" onclick="pick_file_and_send('students', true);" title="Upload table (update records)">
+          <span class="badge badge-warning">CSV&nbsp;&blacktriangle;</span>
+        </a>
+        <a href="#" onclick="clear_table('students');" title="Clear table">
+          <span class="badge badge-danger">&cross;</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Disciplinas</td>
+      <td>{{ data.courses }}</td>
+      <td>
+        <a href="#" onclick="download_click_handler(event);" data-domain="courses"
+           download="disciplinas.csv" title="Download table">
+          <span class="badge badge-success">CSV&nbsp;&blacktriangledown;</span>
+        </a>
+        <a href="#" onclick="pick_file_and_send('courses');" title="Upload table (safe)">
+          <span class="badge badge-primary">CSV&nbsp;&blacktriangle;</span>
+        </a>
+        <a href="#" onclick="pick_file_and_send('courses', true);" title="Upload table (update records)">
+          <span class="badge badge-warning">CSV&nbsp;&blacktriangle;</span>
+        </a>
+        <a href="#" onclick="clear_table('courses');" title="Clear table">
+          <span class="badge badge-danger">&cross;</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Turmas</td>
+      <td>{{ data.classes }}</td>
+      <td>
+        <a href="#" onclick="download_click_handler(event);" data-domain="classes"
+           download="turmas.csv" title="Download table">
+          <span class="badge badge-success">CSV&nbsp;&blacktriangledown;</span>
+        </a>
+        <a href="#" onclick="pick_file_and_send('classes');" title="Upload table (safe)">
+          <span class="badge badge-primary">CSV&nbsp;&blacktriangle;</span>
+        </a>
+        <a href="#" onclick="pick_file_and_send('classes', true)" title="Upload table (update records)">
+          <span class="badge badge-warning">CSV&nbsp;&blacktriangle;</span>
+        </a>
+        <a href="#" onclick="clear_table('classes')" title="Clear table">
+          <span class="badge badge-danger">&cross;</span>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Preferências</td>
+      <td>{{ data.responded }} (alunos)</td>
+      <td>
+        <a href="#" onclick="download_click_handler(event);" data-domain="preferences"
+           download="preferencias.xlsx" title="Download tables">
+          <span class="badge badge-success">XLS&nbsp;&blacktriangledown;</span>
+        </a>
+        <a href="#" onclick="upload_preferences()" title="Clear tables and upload records">
+          <span class="badge badge-danger">XLS&nbsp;&blacktriangle;</span>
+        </a>
+        <a href="#" onclick="clear_table('preferences')" title="Clear tables">
+          <span class="badge badge-danger">&cross;</span>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,28 @@
+{% for record in records %}
+    <div class="card mb-4">
+        <div class="card-header" data-toggle="collapse"
+             data-target="#collapse{{ record.code | replace(' ', '-')  }}">
+            {% set p = parse_json(record.properties) %}
+            <span class="card-title">{{ record.code }} - {{ p.NOME_TURMA | default('turma sem nome') }}
+            </span><br>
+            <span class="card-title">{{ p.PROFESSOR | default('prof. desconhecido') }}</span>
+            <i class="material-icons btn-link no-underline" style="float: right; cursor: pointer;"
+               onclick="event.stopPropagation(); delete_class('{{ record.code }}');">delete</i>
+            <i class="material-icons btn-link no-underline" style="float: right; cursor: pointer;"
+               onclick="event.stopPropagation(); edit_class('{{ record.code }}');">edit</i>
+        </div>
+        <div class="collapse"  id="collapse{{ record.code | replace(' ', '-') }}">
+            <div class="card-body">
+                <p class="card-text">
+                    HORÁRIO: {{ record.schedule }}<br>
+                    <!-- CÓDIGO: {{ record.code }}<br> -->
+                    CÓDIGO DISC.: {{ record.course_code }}<br>
+
+                    {% for key in p %}
+                        {{ key | upper }}: {{ p[key] }}<br>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endfor %}

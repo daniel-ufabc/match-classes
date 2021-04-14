@@ -1,0 +1,26 @@
+{% for course in records %}
+    <div class="card mb-4">
+        <div class="card-header" data-toggle="collapse"
+             data-target="#collapse{{ course.code }}">
+            <span class="card-title">{{ course.name }}</span>
+            <i class="material-icons btn-link no-underline" style="float: right; cursor: pointer;"
+               onclick="event.stopPropagation(); add_item('{{ course.code }}', '{{ course.name }}');">add_box</i>
+        </div>
+        <div class="collapse"  id="collapse{{ course.code }}" data-iturmas-name="{{ course.name }}">
+            <div class="card-body">
+                    <p class="card-text">
+                        CÓDIGO: {{ course.code }}<br>
+                        {% set p = parse_json(course.properties) %}
+                        {% for key in p %}
+                            {# {{ course.properties | print_dict }} #}
+                            {{ key | upper }}: {{ p[key] }}<br>
+                        {% endfor %}
+                    </p>
+            </div>
+        </div>
+        <!-- <div class="card-footer text-muted">
+            Posted on January 1, 2017 by
+            <a href="#">Start Bootstrap</a>
+        </div> -->
+    </div>
+{% endfor %}

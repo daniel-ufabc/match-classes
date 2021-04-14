@@ -1,0 +1,15 @@
+.idea/
+.env
+iturmas/scratch/upload/
+misc/scratch/.ipynb_checkpoints
+venv/
+__pycache__/
+*.o
+sort_students
+misc/data/
+mysql/
+.pytest_cache/
+driver/bin/
+misc/scratch/
+iturmas/running.txt
+misc/upload/

@@ -1,0 +1,42 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 30%">Status</th>
+      <th scope="col" style="width: 40%">Progresso</th>
+      <th scope="col" style="width: 30%">Operações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{% if state == 2 %}
+        <span style="color: #28a745; font-weight: bold;">{# &#128505; #} &check;</span>
+        {% elif state > 2 %}
+        <span style="color: #dc3545; font-weight: bold;">&cross;</span>
+        {% endif %}&nbsp;{{ status }}</td>
+      <td>
+        {% if state > 2 %}
+        {{ progress }}
+        {% elif state == 1 %} {# RUNNING #}
+        <div class="progress" style="margin-top: 5px; margin-bottom: 5px; ">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%"></div>
+        </div>
+        {% endif %}
+      </td>
+      <td>
+      {% if state > 1 %} {# not clean and not running #}
+        <a href="#" onclick="scheduler.reset()"><span class="badge badge-danger">LIMPAR</span></a>
+      {% elif state == 0 %}
+        <a href="#" onclick="scheduler.start()"><span class="badge badge-success">INICIAR</span></a>
+      {% else %}
+        <a href="#" onclick="scheduler.stop()"><span class="badge badge-danger">PARAR</span></a>
+      {% endif %}
+      {% if state > 0 %} {# not clean #}
+        <a href="/match/logs" download="logs.txt"><span class="badge badge-warning">LOGS&nbsp;&blacktriangledown;</span></a>
+      {% endif %}
+      {% if state == 2 %} {# SUCCESS #}
+        <a href="/match/results" data-domain="results"><span class="badge badge-success">RESULTADOS&nbsp;&blacktriangledown;</span></a>
+      {% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>

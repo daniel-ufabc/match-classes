@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Preferências{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/sortable.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block links %}
+<ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+        <a class="nav-link" href="/logout"><i class="material-icons">exit_to_app</i></a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<form id="pref_save_form" name="pref_save_form" method="POST" action="/pref/save">
+<input type="hidden" id="nextPages" name="nextPages" value="{{ next_pages }}">
+<input type="hidden" id="courseCode" name="courseCode" value="{{ course_code }}">
+<input type="hidden" id="sequence" name="sequence" value="">
+<!-- if we are sorting the courses, then course_code should be '' -->
+
+<div class="row my-4">
+    <div class="col-md-12">
+        <div style="text-align: right;">
+            <button class="btn btn-primary" type="button" id="save_and_proceed_btn" onclick="save2proceed();" style="padding-top: 0;">
+                Salvar e continuar <i class="material-icons" style="position: relative; top: .3em;">keyboard_arrow_right</i>
+            </button>
+        </div>
+    </div>
+    {% if course_code %}
+    <div class="col-md-12">
+        <div style="text-align: right;">
+            <button class="btn btn-primary" type="button" id="toss_btn" onclick="toss();" style="padding-top: 0;">
+                Desistir desta disciplina <i class="material-icons" style="position: relative; top: .3em;">keyboard_arrow_right</i>
+            </button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        {% block sidebar %}
+        <div class="card my-4">
+            <h5 id="header" class="card-header">{{ selected_items_header }}</h5>
+            <div class="card-body">
+                <p>Itens mais acima têm maior preferência na alocação.</p>
+                <hr>
+                <ul class="my-sortable" id="sortable">
+                    {% if course_code %}
+                        {% for record in preselected %}
+                            <li class="ui-state-default" id="{{ record.class_code }}"
+                                data-id="{{ record.class_code }}" draggable="true">
+                                <img src="{{ url_for('static', filename='img/handle.png') }}" draggable="false"/>
+                                {{ record.class_code }} - {{ record.properties | properties2show('classes') }} -
+                                {{ record.schedule }}
+                                <i class="material-icons btn-link no-underline" style="float: right; cursor: pointer;"
+                                   onclick="delete_item('{{ record.class_code }}');">delete</i>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for record in preselected %}
+                            <li class="ui-state-default" id="{{ record.course_code }}"
+                                data-id="{{ record.course_code }}" draggable="true">
+                                <img src="{{ url_for('static', filename='img/handle.png') }}" draggable="false"/>
+                                {{ record.name }}
+                                {# -- {{ record.properties | properties2show('courses') }} #}
+                                <i class="material-icons btn-link no-underline" style="float: right; cursor: pointer;"
+                                   onclick="delete_item('{{ record.course_code }}');">delete</i>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- Search Widget -->
+        <div class="card my-4">
+            <h5 class="card-header">{{ search_header }}</h5>
+            <div class="card-body">
+                <div class="input-group">
+                    <input id="search_string_input" type="text" class="form-control" placeholder="{{ search_bar_hint_text }}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button"
+                                style="padding: .2em; text-align: center; vertical-align: middle;" id="search_button"
+                                onclick="search_string = $('#search_string_input').val(); search(0);">
+                            <i class="material-icons" style="font-size: 24px;">search</i>
+                        </button>
+                    </span>
+                </div>
+
+                {% if pagination_options %}
+                <div class="input-group mb-3" style="margin-top: 1em;">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="maxperpageSelect">Por página, mostrar</label>
+                    </div>
+                    <select class="custom-select" id="maxperpageSelect"
+                        onChange="javascript:max_per_page = document.getElementById('maxperpageSelect').value; search();">
+                        <option value="5">5 entradas</option>
+                        <option selected value="10">10 entradas</option>
+                        <option value="20">20 entradas</option>
+                        <option value="50">50 entradas</option>
+                    </select>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="entries">
+        {% block entries %}
+        {% endblock %}
+        </div>
+    </div>
+</div>
+
+</form>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.sortable.min.js') }}"></script>
+    <script>
+    var handle_png_url = "{{ url_for('static', filename='img/handle.png') }}";
+
+    $( function() {
+        $( "#sortable" ).sortable({
+            revert: true,
+            axis: "y",
+            forcePlaceholderSize: true
+        });
+        $( "#sortable" ).disableSelection();
+    });
+
+    /* $( function() {
+        $( "#sortable" ).sortable({
+            placeholder: "ui-state-highlight",
+            items: "li:not(.just-not-draggable)",
+            containment: "parent",
+            revert: true,
+            axis: "y"
+        });
+        $( "#sortable" ).disableSelection();
+    }); */
+    </script>
+    <script src="{{ url_for('static', filename='js/all_domains.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/domains/pref.js') }}"></script>
+    <script>
+        search(0);
+    </script>
+{% endblock %}

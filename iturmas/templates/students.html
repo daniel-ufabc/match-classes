@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Alunos{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link href="{{ url_for('static', filename='css/dropzone.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block link_students %}
+    <li class="nav-item active">
+        <a class="nav-link" href="#">Alunos
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+{% endblock %}
+
+{% block modals %}
+    {{ super() }}
+    <!-- Modal -->
+    <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="editStudentModalLabel">Editar aluno</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <!-- <label for="studentInputName">Nome completo</label> -->
+                            <input type="text" class="form-control" id="studentEditName"
+                                   placeholder="Nome completo">
+                        </div>
+                        <div class="form-group">
+                            <!-- <label for="studentInputName">Nome completo</label> -->
+                            <input type="email" class="form-control" id="studentEditEmail"
+                                   placeholder="Email institucional">
+                        </div>
+                        <div class="form-group">
+                            <!-- <label for="exampleInputPassword1">Password</label> -->
+                            <div style="display: inline-block; position: relative; width: 100%;">
+                                <input type="text" class="form-control" id="studentEditCode"
+                                   placeholder="Nº de registro (RA)" disabled>
+                                <div style="position: absolute; left:0; right:0; top:0; bottom:0;"
+                                   onclick="showWarning();"></div>
+                            </div>​
+                            <p class="my-warning my-hidden" id="editStudentCodeWarning" style="line-height: 0.9;" >
+                                <small>
+                                    Impossível alterar o número de registro do aluno via este formulário.<br>
+                                    Exclua o aluno e insira-o novamente com o número de registro desejado.
+                                </small>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <!-- <label for="exampleInputPassword1">Password</label> -->
+                            <input type="text" class="form-control" id="studentEditMaxLoad"
+                                   placeholder="Carga máxima (h)">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentInputProperties">Propriedades</label>
+                            <textarea class="form-control" id="studentEditProperties"
+                                       placeholder="properties.keys()" rows="5"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="cancel_edit_student();">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="finish_edit_student();" >
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <!-- Search Widget SEARCH STUDENTS -->
+    <div class="card my-4">
+        <h5 class="card-header">Buscar</h5>
+        <div class="card-body">
+            <div class="input-group">
+                <input id="search_string" type="text" class="form-control" placeholder="Nome ou RA">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button"
+                            style="padding: .2em; text-align: center; vertical-align: middle;" id="search_button"
+                            onclick="search_string = $('#search_string').val(); search(0);">
+                        <i class="material-icons" style="font-size: 24px;">search</i>
+                    </button>
+                </span>
+            </div>
+
+            <div class="input-group mb-3" style="margin-top: 1em;">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="maxperpageSelect">Por página, mostrar</label>
+                </div>
+                <select class="custom-select" id="maxperpageSelect"
+                    onChange="javascript:max_per_page = document.getElementById('maxperpageSelect').value; search();">
+                    <option value="5">5 entradas</option>
+                    <option selected value="10">10 entradas</option>
+                    <option value="20">20 entradas</option>
+                    <option value="50">50 entradas</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Widget INSERT STUDENT -->
+    <div class="card my-4">
+        <h5 id="insertCardheader" class="card-header">Inserir</h5>
+        <div class="card-body">
+            <!-- <p>Para inserir um aluno manualmente, coloque os dados do aluno nos campos abaixo e clique em "Inserir".</p> -->
+            <form>
+                <div class="form-group">
+                    <!-- <label for="studentInputName">Nome completo</label> -->
+                    <input type="text" class="form-control" id="studentInputName"
+                           placeholder="Nome completo">
+                </div>
+                <div class="form-group">
+                    <!-- <label for="studentInputName">Nome completo</label> -->
+                    <input type="email" class="form-control" id="studentInputEmail"
+                           placeholder="Email institucional">
+                </div>
+                <div class="form-group">
+                    <!-- <label for="exampleInputPassword1">Password</label> -->
+                    <input type="text" class="form-control" id="studentInputCode"
+                           placeholder="Nº de registro (RA)">
+                </div>
+                <div class="form-group">
+                    <!-- <label for="exampleInputPassword1">Password</label> -->
+                    <input type="text" class="form-control" id="studentInputMaxLoad"
+                           placeholder="Carga máxima (h)">
+                </div>
+                <div class="form-group">
+                    <label for="studentInputProperties">Propriedades</label>
+                    <textarea class="form-control" id="studentInputProperties"
+                               placeholder="em formato JSON" rows="5"></textarea>
+                </div>
+                <button id="btnInsert" type="button" class="btn btn-primary" onclick="insert_student();">Inserir</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Side Widget UPLOAD CSV
+    <div class="card my-4">
+        <h5 class="card-header"><i>Upload</i> CSV</h5>
+        <div class="card-body">
+
+            <div id="myDropzone" class="dropzone">
+                <div class="fallback">
+                    <input name="file" type="file" multiple/>
+                </div>
+            </div>
+
+            <h5 id="uploadInfoHeader" class="collapsed" data-toggle="collapse" data-target="#uploadInfo">
+                Formato do arquivo
+                <i class="material-icons" style="float: right;">expand_less</i>
+            </h5>
+            <div class="collapse" id="uploadInfo">
+                <div>
+                    <p style="margin-top: 1em;">O arquivo CSV com os registros dos alunos deve ser codificado em
+                        <i>utf-8</i>, usar <i>ponto-e-vírgula</i> como delimitador de campos, <i>aspas simples</i>
+                        como delimitador de texto (em todos os campos de texto), e conter a linha de cabeçalho.
+                    </p>
+                    <p>
+                        As três primeiras colunas serão interpretadas como: registro de aluno, nome completo e
+                        carga máxima, independentemente dos textos correspondentes na linha de cabeçalho.
+                    </p>
+                    <p> Se houver uma quarta coluna e seu cabeçalho for "propriedades", ela deverá ser a última coluna
+                        e as entradas dessa coluna serão interpretadas nos mesmos moldes do campo <i>propriedades</i>
+                        acima.
+                    </p>
+                    <p>
+                        Opcionalmente, em vez de uma única coluna "propriedades", o CSV pode conter multiplas colunas,
+                        cada uma delas discriminando uma propriedade do aluno.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/crud.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/domains/student.js') }}"></script>
+    <script>
+        search(0);
+    </script>
+{% endblock %}

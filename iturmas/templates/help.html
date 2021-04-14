@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Senha{% endblock %}
+
+{% block links %}{% endblock %}
+
+{% block brand_link %}
+<a id="iturmas_brand" class="navbar-brand brand" href="{{ url_for('pages.index') }}"><i>iTurmas</i></a>
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+    <style>
+        .card-body {
+            font-family: 'Raleway', sans-serif;
+            font-size: 22px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<!-- <div class="row"> -->
+    <div class="card my-4">
+         <div class="card-body">
+            {{ html_content | safe }}
+         </div>
+    </div>
+<!-- </div> -->
+{% endblock %}

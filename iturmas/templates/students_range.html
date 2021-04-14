@@ -1,0 +1,30 @@
+{% for student in records %}
+    <div class="card mb-4">
+        <div class="card-header" data-toggle="collapse"
+             data-target="#collapse{{ student.code }}">
+            <span class="card-title">{{ student.name }}</span>
+            <i class="material-icons btn-link no-underline" style="float: right; cursor: pointer;"
+               onclick="event.stopPropagation(); delete_student('{{ student.code }}');">delete</i>
+            <i class="material-icons btn-link no-underline" style="float: right; cursor: pointer;"
+               onclick="event.stopPropagation(); edit_student('{{ student.code }}');">edit</i>
+        </div>
+        <div class="collapse"  id="collapse{{ student.code }}" data-iturmas-name="{{ student.name }}">
+            <div class="card-body">
+                    <p class="card-text">
+                        RA: {{ student.code }}<br>
+                        EMAIL: {{ student.email }}<br>
+                        CARGA: {{ student.max_load }}<br>
+                        {% set p = parse_json(student.properties) %}
+                        {% for key in p %}
+                            {# {{ student.properties | print_dict }} #}
+                            {{ key | upper }}: {{ p[key] }}<br>
+                        {% endfor %}
+                    </p>
+            </div>
+        </div>
+        <!-- <div class="card-footer text-muted">
+            Posted on January 1, 2017 by
+            <a href="#">Start Bootstrap</a>
+        </div> -->
+    </div>
+{% endfor %}
